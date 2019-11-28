@@ -5,8 +5,8 @@ import { AuthService } from './auth.service';
 import { GoogleStrategy } from './google.strategy';
 
 @Module({
-  imports: [PassportModule.register({ session: false })],
-  controllers: [AuthController],
   providers: [AuthService, GoogleStrategy],
+  controllers: [AuthController],
+  imports: [PassportModule.register({ session: false })],
 })
 export class AuthModule {}

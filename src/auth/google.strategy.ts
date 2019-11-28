@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-google-oauth20';
+import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { StrategyOptionsWithRequest } from 'passport-oauth2';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor() {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID, // <- Replace this with your client id
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET, // <- Replace this with your client secret
-      callbackURL: `${process.env.BACKEND_HOST}/auth/google/callback`,
+      clientID:
+        '190778205087-n2gq3rl734sd735m7uvudo0tunm4ia5d.apps.googleusercontent.com',
+      clientSecret: '6GUMKMLAkIU-vkuPsuAdLMKo',
+      callbackURL: 'http://localhost:3000/auth/google/callback',
       passReqToCallback: true,
       scope: ['profile', 'email'],
-      //         session:false
     } as StrategyOptionsWithRequest);
   }
 
@@ -20,23 +20,15 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     _: Request,
     __: string,
     ___: string,
-    profile: any,
-    done: (error: any, payload: any) => void,
-  ) {
-    const {
-      sub: googleId,
-      email,
-      given_name: userName,
-    }: { sub: string; email: string; given_name: string } = profile._json;
+    profile: Profile,
+    done: VerifyCallback,
+  ): Promise<any> {
     console.log(profile);
 
     try {
-      // do login above
-      return done(null, { id: 'randomId' });
+      //
+      done(null, { id: 'userId' });
     } catch (err) {
-      // console.log(err)
-      console.log('caught error');
-
       done(err, false);
     }
   }
